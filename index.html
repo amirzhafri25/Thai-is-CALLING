@@ -389,7 +389,77 @@ document.getElementById("missionResult").innerHTML =
 });
 
 updateMission();
+// AUTO SAVE PLAYER
 
+const savedPlayer = localStorage.getItem("selectedPlayer");
+
+if(savedPlayer){
+
+players.forEach(player=>{
+
+if(player.innerText === savedPlayer){
+
+player.classList.add("selected");
+
+document.getElementById("status").innerHTML =
+"🫡 SELECTED: " + player.innerText;
+
+}
+
+});
+
+}
+
+players.forEach(player=>{
+
+player.addEventListener("click",()=>{
+
+localStorage.setItem(
+"selectedPlayer",
+player.innerText
+);
+
+});
+
+});
+
+// AUTO SAVE CHECKLIST
+
+const savedChecklist =
+JSON.parse(
+localStorage.getItem("bangkokChecklist")
+);
+
+if(savedChecklist){
+
+checks.forEach((c,i)=>{
+
+if(savedChecklist[i] !== undefined){
+
+c.checked = savedChecklist[i];
+
+}
+
+});
+
+updateMission();
+
+}
+
+checks.forEach(c=>{
+
+c.addEventListener("change",()=>{
+
+localStorage.setItem(
+"bangkokChecklist",
+JSON.stringify(
+[...checks].map(c=>c.checked)
+)
+);
+
+});
+
+});
 </script>
 
 </body>

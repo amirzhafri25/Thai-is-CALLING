@@ -1,13 +1,12 @@
 ```html
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>🇹🇭 THAILAND IS CALLING</title>
 
 <style>
-
 *{
 margin:0;
 padding:0;
@@ -56,7 +55,7 @@ gap:15px;
 background:rgba(255,255,255,0.08);
 padding:20px;
 border-radius:20px;
-text-align:center;
+margin-top:15px;
 }
 
 .card h3{
@@ -67,7 +66,7 @@ color:#38bdf8;
 .countdown{
 font-size:35px;
 font-weight:bold;
-margin-top:10px;
+margin-top:15px;
 }
 
 .section{
@@ -90,6 +89,7 @@ padding:15px;
 border-radius:12px;
 cursor:pointer;
 transition:0.3s;
+text-align:center;
 }
 
 .player:hover{
@@ -108,10 +108,6 @@ font-weight:bold;
 text-align:center;
 }
 
-.leaderboard{
-margin-top:20px;
-}
-
 .rank{
 padding:15px;
 margin:10px 0;
@@ -120,14 +116,56 @@ border-radius:12px;
 font-size:20px;
 }
 
+.progress{
+height:30px;
+background:#334155;
+border-radius:20px;
+overflow:hidden;
+margin-top:15px;
+}
+
+.bar{
+height:100%;
+width:0%;
+background:#00b894;
+transition:0.5s;
+}
+
+#progressText{
+margin-top:10px;
+text-align:center;
+}
+
+#submitMission{
+width:100%;
+margin-top:15px;
+padding:15px;
+border:none;
+border-radius:10px;
+background:#00b894;
+color:white;
+font-size:18px;
+cursor:pointer;
+}
+
+#missionResult{
+margin-top:20px;
+font-size:24px;
+font-weight:bold;
+text-align:center;
+}
+
 .footer{
 margin-top:30px;
 text-align:center;
 color:#94a3b8;
 }
 
+label{
+display:block;
+margin:10px 0;
+}
 </style>
-
 </head>
 
 <body>
@@ -135,7 +173,6 @@ color:#94a3b8;
 <div class="container">
 
 <div class="hero">
-
 <h1>🇹🇭 THAILAND IS CALLING</h1>
 <h2>13 June 2026 • 10:00 AM</h2>
 
@@ -161,7 +198,6 @@ MISSION ACTIVE
 <div class="countdown" id="countdown">
 Loading...
 </div>
-
 </div>
 
 <div class="section">
@@ -194,129 +230,62 @@ No Soldier Selected
 
 <h2>🏆 OPERATION BANGKOK LEADERBOARD</h2>
 
-<div class="leaderboard">
-
-<div class="rank">
-🥇 AFFIQ HISAP SAMPAI BIRU
-</div>
-
-<div class="rank">
-🥈 JOIN FAS NABIL
-</div>
-
-<div class="rank">
-🥉 ESYE-ESYE JE
-</div>
-
-<div class="rank">
-🐣 TELUR SATU
-</div>
+<div class="rank">🥇 AFFIQ HISAP SAMPAI BIRU</div>
+<div class="rank">🥈 JOIN FAS NABIL</div>
+<div class="rank">🥉 ESYE-ESYE JE</div>
+<div class="rank">🐣 TELUR SATU</div>
 
 </div>
 
-</div>
-```html
 <div class="section">
 
 <h2>📋 MISSION CHECKLIST</h2>
 
 <div class="card">
 <h3>📄 DOCUMENTS</h3>
-
-<label><input type="checkbox" class="check"> Passport</label><br><br>
-<label><input type="checkbox" class="check"> Flight Ticket</label><br><br>
-<label><input type="checkbox" class="check"> Hotel Booking</label><br><br>
-<label><input type="checkbox" class="check"> Return Flight</label><br><br>
+<label><input type="checkbox" class="check"> Passport</label>
+<label><input type="checkbox" class="check"> Flight Ticket</label>
+<label><input type="checkbox" class="check"> Hotel Booking</label>
+<label><input type="checkbox" class="check"> Return Flight</label>
 <label><input type="checkbox" class="check"> TDAC</label>
-
 </div>
 
 <div class="card">
 <h3>📱 PHONE</h3>
-
-<label><input type="checkbox" class="check"> eSIM</label><br><br>
-<label><input type="checkbox" class="check"> Google Maps</label><br><br>
+<label><input type="checkbox" class="check"> eSIM</label>
+<label><input type="checkbox" class="check"> Google Maps</label>
 <label><input type="checkbox" class="check"> Google Translate</label>
-
 </div>
 
 <div class="card">
 <h3>💰 MONEY</h3>
-
-<label><input type="checkbox" class="check"> Exchange THB</label><br><br>
+<label><input type="checkbox" class="check"> Exchange THB</label>
 <label><input type="checkbox" class="check"> Emergency Cash</label>
-
 </div>
 
 <div class="card">
 <h3>🔋 ELECTRONICS</h3>
-
-<label><input type="checkbox" class="check"> Charger</label><br><br>
-<label><input type="checkbox" class="check"> Power Bank</label><br><br>
+<label><input type="checkbox" class="check"> Charger</label>
+<label><input type="checkbox" class="check"> Power Bank</label>
 <label><input type="checkbox" class="check"> Charging Cable</label>
-
 </div>
 
-<div class="card">
-<h3>👕 PACKING</h3>
-
-<label><input type="checkbox" class="check"> Shirts</label><br><br>
-<label><input type="checkbox" class="check"> Pants / Shorts</label><br><br>
-<label><input type="checkbox" class="check"> Underwear</label><br><br>
-<label><input type="checkbox" class="check"> Slippers</label><br><br>
-<label><input type="checkbox" class="check"> Sunglasses</label>
-
+<div class="progress">
+<div class="bar" id="progressBar"></div>
 </div>
 
-<div class="card">
+<h2 id="progressText">0% READY</h2>
 
-<h3>📊 MISSION PROGRESS</h3>
-
-<div style="
-background:#334155;
-height:30px;
-border-radius:20px;
-overflow:hidden;
-">
-
-<div id="progressBar"
-style="
-height:100%;
-width:0%;
-background:#00b894;
-transition:0.5s;
-">
-</div>
-
-</div>
-
-<h2 id="progressText">
-0% READY
-</h2>
-
-<button id="submitMission"
-style="
-margin-top:15px;
-width:100%;
-">
+<button id="submitMission">
 🚀 SUBMIT MISSION
 </button>
 
-<div id="missionResult"
-style="
-margin-top:15px;
-font-size:24px;
-font-weight:bold;
-text-align:center;
-">
-</div>
+<div id="missionResult"></div>
 
 </div>
 
-</div>
-```
 <div class="footer">
-Thailand Deployment Dashboard v1
+Thailand Deployment Dashboard v2
 </div>
 
 </div>
@@ -324,103 +293,61 @@ Thailand Deployment Dashboard v1
 <script>
 
 function updateCountdown(){
+const target = new Date("2026-06-13T10:00:00");
+const now = new Date();
+const diff = target - now;
+const days = Math.floor(diff/(1000*60*60*24));
 
-const target =
-new Date("2026-06-13T10:00:00");
-
-const now =
-new Date();
-
-const diff =
-target-now;
-
-const days =
-Math.floor(diff/(1000*60*60*24));
-
-document.getElementById(
-"countdown"
-).innerHTML =
-"⏳ DEPLOYMENT IN " +
-days +
-" DAYS";
-
+document.getElementById("countdown").innerHTML =
+"⏳ DEPLOYMENT IN " + days + " DAYS";
 }
 
 setInterval(updateCountdown,1000);
-
 updateCountdown();
 
-const players =
-document.querySelectorAll(".player");
+const players=document.querySelectorAll(".player");
 
 players.forEach(player=>{
+player.addEventListener("click",()=>{
 
-player.addEventListener(
-"click",
-()=>{
+players.forEach(p=>p.classList.remove("selected"));
 
-players.forEach(
-p=>p.classList.remove("selected")
-);
+player.classList.add("selected");
 
-player.classList.add(
-"selected"
-);
-
-document.getElementById(
-"status"
-).innerHTML =
-"🫡 SELECTED: " +
-player.innerText;
-
-}
-);
+document.getElementById("status").innerHTML =
+"🫡 SELECTED: " + player.innerText;
 
 });
-```javascript
-const checks =
-document.querySelectorAll(".check");
+});
+
+const checks=document.querySelectorAll(".check");
 
 function updateMission(){
 
-let checked = 0;
+let checked=0;
 
 checks.forEach(c=>{
 if(c.checked) checked++;
 });
 
-let percent =
-Math.round(
+let percent=Math.round(
 (checked/checks.length)*100
 );
 
-document.getElementById(
-"progressBar"
-).style.width =
+document.getElementById("progressBar").style.width =
 percent+"%";
 
-document.getElementById(
-"progressText"
-).innerHTML =
-percent + "% READY";
-
+document.getElementById("progressText").innerHTML =
+percent+"% READY";
 }
 
 checks.forEach(c=>{
-c.addEventListener(
-"change",
-updateMission
-);
+c.addEventListener("change",updateMission);
 });
 
-document.getElementById(
-"submitMission"
-).addEventListener(
-"click",
-()=>{
+document.getElementById("submitMission").addEventListener("click",()=>{
 
-const passport =
-checks[0].checked;
+const passport = checks[0].checked;
 
 let checked = 0;
 
@@ -428,16 +355,13 @@ checks.forEach(c=>{
 if(c.checked) checked++;
 });
 
-let percent =
-Math.round(
+let percent=Math.round(
 (checked/checks.length)*100
 );
 
 if(!passport){
 
-document.getElementById(
-"missionResult"
-).innerHTML =
+document.getElementById("missionResult").innerHTML =
 "🚨 Passport pon lupa ke CIBAI";
 
 return;
@@ -445,31 +369,26 @@ return;
 
 if(percent < 50){
 
-document.getElementById(
-"missionResult"
-).innerHTML =
+document.getElementById("missionResult").innerHTML =
 "🤡 KAU INGAT LUCU KE BABI";
 
 }
 else if(percent === 100){
 
-document.getElementById(
-"missionResult"
-).innerHTML =
+document.getElementById("missionResult").innerHTML =
 "💙 AFFIQ HISAP SAMPAI BIRU 🎉";
 
 }
 else{
 
-document.getElementById(
-"missionResult"
-).innerHTML =
+document.getElementById("missionResult").innerHTML =
 "😎 THAILAND CALLING";
 
 }
 
 });
-```
+
+updateMission();
 
 </script>
 

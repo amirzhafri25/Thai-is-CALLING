@@ -1,12 +1,15 @@
-```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>🇹🇭 THAILAND IS CALLING</title>
+
+<title>🇹🇭 THAILAND IS CALLING V3</title>
+
+<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
 
 <style>
+
 *{
 margin:0;
 padding:0;
@@ -18,10 +21,16 @@ font-family:Arial,sans-serif;
 background:linear-gradient(135deg,#0f172a,#1e293b);
 color:white;
 padding:20px;
+transition:0.4s;
+}
+
+body.light{
+background:linear-gradient(135deg,#dbeafe,#f8fafc);
+color:#111827;
 }
 
 .container{
-max-width:1100px;
+max-width:1200px;
 margin:auto;
 }
 
@@ -34,43 +43,56 @@ text-align:center;
 box-shadow:0 0 30px rgba(0,0,0,0.4);
 }
 
-.hero h1{
+.flag{
 font-size:50px;
+margin-bottom:10px;
+animation:wave 2s infinite;
+}
+
+@keyframes wave{
+0%{transform:rotate(0deg);}
+25%{transform:rotate(5deg);}
+50%{transform:rotate(0deg);}
+75%{transform:rotate(-5deg);}
+100%{transform:rotate(0deg);}
+}
+
+.hero h1{
+font-size:48px;
 margin-bottom:10px;
 }
 
 .hero h2{
-color:#94a3b8;
-font-weight:normal;
+opacity:0.8;
 }
 
 .flightboard{
-margin-top:25px;
 display:grid;
-grid-template-columns:repeat(3,1fr);
+grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
 gap:15px;
+margin-top:20px;
 }
 
 .card{
 background:rgba(255,255,255,0.08);
 padding:20px;
 border-radius:20px;
-margin-top:15px;
+transition:0.3s;
 }
 
-.card h3{
-margin-bottom:10px;
-color:#38bdf8;
+.card:hover{
+transform:translateY(-5px);
+box-shadow:0 0 20px rgba(56,189,248,0.5);
 }
 
 .countdown{
 font-size:35px;
 font-weight:bold;
-margin-top:15px;
+margin-top:20px;
 }
 
 .section{
-margin-top:30px;
+margin-top:25px;
 background:rgba(255,255,255,0.08);
 padding:25px;
 border-radius:20px;
@@ -88,32 +110,25 @@ background:#1e293b;
 padding:15px;
 border-radius:12px;
 cursor:pointer;
-transition:0.3s;
 text-align:center;
+transition:0.3s;
 }
 
 .player:hover{
 transform:scale(1.05);
-background:#334155;
 }
 
 .selected{
 background:#00b894 !important;
-}
-
-.status{
-margin-top:20px;
-font-size:22px;
-font-weight:bold;
-text-align:center;
+box-shadow:0 0 25px #00b894;
 }
 
 .rank{
-padding:15px;
-margin:10px 0;
 background:#1e293b;
+padding:15px;
 border-radius:12px;
-font-size:20px;
+margin-top:10px;
+font-size:18px;
 }
 
 .progress{
@@ -127,54 +142,86 @@ margin-top:15px;
 .bar{
 height:100%;
 width:0%;
-background:#00b894;
+background:red;
 transition:0.5s;
 }
 
 #progressText{
 margin-top:10px;
 text-align:center;
+font-size:24px;
+font-weight:bold;
 }
 
-#submitMission{
+button{
 width:100%;
-margin-top:15px;
 padding:15px;
 border:none;
-border-radius:10px;
+border-radius:12px;
 background:#00b894;
 color:white;
 font-size:18px;
 cursor:pointer;
+margin-top:15px;
 }
 
 #missionResult{
 margin-top:20px;
-font-size:24px;
+font-size:26px;
 font-weight:bold;
 text-align:center;
+}
+
+#telurMeter{
+margin-top:15px;
+text-align:center;
+font-size:24px;
+font-weight:bold;
+}
+
+.toggle{
+position:fixed;
+top:15px;
+right:15px;
+width:auto;
+padding:10px 15px;
 }
 
 .footer{
 margin-top:30px;
 text-align:center;
-color:#94a3b8;
+opacity:0.7;
 }
 
 label{
 display:block;
 margin:10px 0;
 }
+
 </style>
 </head>
 
 <body>
 
+<button class="toggle" id="themeBtn">
+🌙 Dark / Light
+</button>
+
 <div class="container">
 
 <div class="hero">
-<h1>🇹🇭 THAILAND IS CALLING</h1>
-<h2>13 June 2026 • 10:00 AM</h2>
+
+<div class="flag">
+🇹🇭 🇹🇭 🇹🇭
+</div>
+
+<h1>
+THAILAND IS CALLING
+</h1>
+
+<h2>
+13 June 2026 • 10:00 AM
+</h2>
 
 <div class="flightboard">
 
@@ -198,6 +245,7 @@ MISSION ACTIVE
 <div class="countdown" id="countdown">
 Loading...
 </div>
+
 </div>
 
 <div class="section">
@@ -220,9 +268,9 @@ Loading...
 
 </div>
 
-<div class="status" id="status">
+<h3 id="status" style="text-align:center;margin-top:20px;">
 No Soldier Selected
-</div>
+</h3>
 
 </div>
 
@@ -242,39 +290,65 @@ No Soldier Selected
 <h2>📋 MISSION CHECKLIST</h2>
 
 <div class="card">
+
 <h3>📄 DOCUMENTS</h3>
+
 <label><input type="checkbox" class="check"> Passport</label>
 <label><input type="checkbox" class="check"> Flight Ticket</label>
 <label><input type="checkbox" class="check"> Hotel Booking</label>
 <label><input type="checkbox" class="check"> Return Flight</label>
 <label><input type="checkbox" class="check"> TDAC</label>
+
 </div>
 
 <div class="card">
+
 <h3>📱 PHONE</h3>
+
 <label><input type="checkbox" class="check"> eSIM</label>
 <label><input type="checkbox" class="check"> Google Maps</label>
 <label><input type="checkbox" class="check"> Google Translate</label>
+
 </div>
 
 <div class="card">
+
 <h3>💰 MONEY</h3>
+
 <label><input type="checkbox" class="check"> Exchange THB</label>
 <label><input type="checkbox" class="check"> Emergency Cash</label>
+
 </div>
 
 <div class="card">
+
 <h3>🔋 ELECTRONICS</h3>
+
 <label><input type="checkbox" class="check"> Charger</label>
 <label><input type="checkbox" class="check"> Power Bank</label>
 <label><input type="checkbox" class="check"> Charging Cable</label>
+
+</div>
+
+<div class="card">
+
+<h3>👕 PACKING</h3>
+
+<label><input type="checkbox" class="check"> Shirts</label>
+<label><input type="checkbox" class="check"> Pants / Shorts</label>
+<label><input type="checkbox" class="check"> Underwear</label>
+<label><input type="checkbox" class="check"> Slippers</label>
+<label><input type="checkbox" class="check"> Sunglasses</label>
+
 </div>
 
 <div class="progress">
 <div class="bar" id="progressBar"></div>
 </div>
 
-<h2 id="progressText">0% READY</h2>
+<h2 id="progressText">
+0% READY
+</h2>
 
 <button id="submitMission">
 🚀 SUBMIT MISSION
@@ -282,10 +356,14 @@ No Soldier Selected
 
 <div id="missionResult"></div>
 
+<div id="telurMeter">
+🐣 TELUR SATU
+</div>
+
 </div>
 
 <div class="footer">
-Thailand Deployment Dashboard v2
+THAILAND IS CALLING V3
 </div>
 
 </div>
@@ -293,105 +371,35 @@ Thailand Deployment Dashboard v2
 <script>
 
 function updateCountdown(){
-const target = new Date("2026-06-13T10:00:00");
-const now = new Date();
-const diff = target - now;
-const days = Math.floor(diff/(1000*60*60*24));
+
+const target =
+new Date("2026-06-13T10:00:00");
+
+const now =
+new Date();
+
+const diff =
+target - now;
+
+const days =
+Math.floor(diff/(1000*60*60*24));
 
 document.getElementById("countdown").innerHTML =
 "⏳ DEPLOYMENT IN " + days + " DAYS";
+
 }
 
 setInterval(updateCountdown,1000);
 updateCountdown();
 
-const players=document.querySelectorAll(".player");
+const players =
+document.querySelectorAll(".player");
 
-players.forEach(player=>{
-player.addEventListener("click",()=>{
+const checks =
+document.querySelectorAll(".check");
 
-players.forEach(p=>p.classList.remove("selected"));
-
-player.classList.add("selected");
-
-document.getElementById("status").innerHTML =
-"🫡 SELECTED: " + player.innerText;
-
-});
-});
-
-const checks=document.querySelectorAll(".check");
-
-function updateMission(){
-
-let checked=0;
-
-checks.forEach(c=>{
-if(c.checked) checked++;
-});
-
-let percent=Math.round(
-(checked/checks.length)*100
-);
-
-document.getElementById("progressBar").style.width =
-percent+"%";
-
-document.getElementById("progressText").innerHTML =
-percent+"% READY";
-}
-
-checks.forEach(c=>{
-c.addEventListener("change",updateMission);
-});
-
-document.getElementById("submitMission").addEventListener("click",()=>{
-
-const passport = checks[0].checked;
-
-let checked = 0;
-
-checks.forEach(c=>{
-if(c.checked) checked++;
-});
-
-let percent=Math.round(
-(checked/checks.length)*100
-);
-
-if(!passport){
-
-document.getElementById("missionResult").innerHTML =
-"🚨 Passport pon lupa ke CIBAI";
-
-return;
-}
-
-if(percent < 50){
-
-document.getElementById("missionResult").innerHTML =
-"🤡 KAU INGAT LUCU KE BABI";
-
-}
-else if(percent === 100){
-
-document.getElementById("missionResult").innerHTML =
-"💙 AFFIQ HISAP SAMPAI BIRU 🎉";
-
-}
-else{
-
-document.getElementById("missionResult").innerHTML =
-"😎 THAILAND CALLING";
-
-}
-
-});
-
-updateMission();
-// AUTO SAVE PLAYER
-
-const savedPlayer = localStorage.getItem("selectedPlayer");
+const savedPlayer =
+localStorage.getItem("selectedPlayer");
 
 if(savedPlayer){
 
@@ -414,6 +422,15 @@ players.forEach(player=>{
 
 player.addEventListener("click",()=>{
 
+players.forEach(
+p=>p.classList.remove("selected")
+);
+
+player.classList.add("selected");
+
+document.getElementById("status").innerHTML =
+"🫡 SELECTED: " + player.innerText;
+
 localStorage.setItem(
 "selectedPlayer",
 player.innerText
@@ -423,7 +440,61 @@ player.innerText
 
 });
 
-// AUTO SAVE CHECKLIST
+function updateMission(){
+
+let checked = 0;
+
+checks.forEach(c=>{
+if(c.checked) checked++;
+});
+
+let percent =
+Math.round(
+(checked/checks.length)*100
+);
+
+document.getElementById("progressBar").style.width =
+percent + "%";
+
+document.getElementById("progressText").innerHTML =
+percent + "% READY";
+
+const bar =
+document.getElementById("progressBar");
+
+if(percent < 50){
+
+bar.style.background = "#ef4444";
+
+document.getElementById("telurMeter").innerHTML =
+"🐣 TELUR SATU";
+
+}
+else if(percent < 80){
+
+bar.style.background = "#f59e0b";
+
+document.getElementById("telurMeter").innerHTML =
+"😴 LAST MINUTE MERCHANT";
+
+}
+else{
+
+bar.style.background = "#22c55e";
+
+document.getElementById("telurMeter").innerHTML =
+"🫡 MISSION READY";
+
+}
+
+localStorage.setItem(
+"bangkokChecklist",
+JSON.stringify(
+[...checks].map(c=>c.checked)
+)
+);
+
+}
 
 const savedChecklist =
 JSON.parse(
@@ -442,26 +513,112 @@ c.checked = savedChecklist[i];
 
 });
 
-updateMission();
-
 }
 
 checks.forEach(c=>{
+c.addEventListener(
+"change",
+updateMission
+);
+});
 
-c.addEventListener("change",()=>{
+document.getElementById("submitMission")
+.addEventListener("click",()=>{
 
-localStorage.setItem(
-"bangkokChecklist",
-JSON.stringify(
-[...checks].map(c=>c.checked)
+const passport =
+checks[0].checked;
+
+let checked = 0;
+
+checks.forEach(c=>{
+if(c.checked) checked++;
+});
+
+let percent =
+Math.round(
+(checked/checks.length)*100
+);
+
+const roasts = [
+
+"🤡 KAU INGAT LUCU KE BABI",
+"🐢 GERAK MACAM SIPUT",
+"🥔 HOLIDAY NAK GI TAPI CHECKLIST TAK SIAP",
+"🙈 THAILAND PUN TAK NAK KAU"
+
+];
+
+if(!passport){
+
+document.getElementById("missionResult")
+.innerHTML =
+"🚨 Passport pon lupa ke CIBAI";
+
+return;
+
+}
+
+if(percent < 50){
+
+document.getElementById("missionResult")
+.innerHTML =
+roasts[
+Math.floor(
+Math.random()*roasts.length
 )
+];
+
+}
+else if(percent < 80){
+
+document.getElementById("missionResult")
+.innerHTML =
+"😴 LAST MINUTE MERCHANT";
+
+}
+else if(percent < 95){
+
+document.getElementById("missionResult")
+.innerHTML =
+"✈️ AIRPORT WARRIOR";
+
+}
+else if(percent < 100){
+
+document.getElementById("missionResult")
+.innerHTML =
+"🏆 BANGKOK LEGEND";
+
+}
+else{
+
+document.getElementById("missionResult")
+.innerHTML =
+"👑 SUPREME COMMANDER<br>💙 AFFIQ HISAP SAMPAI BIRU";
+
+confetti({
+particleCount:300,
+spread:180
+});
+
+}
+
+});
+
+document.getElementById("themeBtn")
+.addEventListener("click",()=>{
+
+document.body.classList.toggle(
+"light"
 );
 
 });
 
-});
+updateMission();
+
 </script>
 
 </body>
 </html>
-```
+
+

@@ -215,7 +215,106 @@ No Soldier Selected
 </div>
 
 </div>
+```html
+<div class="section">
 
+<h2>📋 MISSION CHECKLIST</h2>
+
+<div class="card">
+<h3>📄 DOCUMENTS</h3>
+
+<label><input type="checkbox" class="check"> Passport</label><br><br>
+<label><input type="checkbox" class="check"> Flight Ticket</label><br><br>
+<label><input type="checkbox" class="check"> Hotel Booking</label><br><br>
+<label><input type="checkbox" class="check"> Return Flight</label><br><br>
+<label><input type="checkbox" class="check"> TDAC</label>
+
+</div>
+
+<div class="card">
+<h3>📱 PHONE</h3>
+
+<label><input type="checkbox" class="check"> eSIM</label><br><br>
+<label><input type="checkbox" class="check"> Google Maps</label><br><br>
+<label><input type="checkbox" class="check"> Google Translate</label>
+
+</div>
+
+<div class="card">
+<h3>💰 MONEY</h3>
+
+<label><input type="checkbox" class="check"> Exchange THB</label><br><br>
+<label><input type="checkbox" class="check"> Emergency Cash</label>
+
+</div>
+
+<div class="card">
+<h3>🔋 ELECTRONICS</h3>
+
+<label><input type="checkbox" class="check"> Charger</label><br><br>
+<label><input type="checkbox" class="check"> Power Bank</label><br><br>
+<label><input type="checkbox" class="check"> Charging Cable</label>
+
+</div>
+
+<div class="card">
+<h3>👕 PACKING</h3>
+
+<label><input type="checkbox" class="check"> Shirts</label><br><br>
+<label><input type="checkbox" class="check"> Pants / Shorts</label><br><br>
+<label><input type="checkbox" class="check"> Underwear</label><br><br>
+<label><input type="checkbox" class="check"> Slippers</label><br><br>
+<label><input type="checkbox" class="check"> Sunglasses</label>
+
+</div>
+
+<div class="card">
+
+<h3>📊 MISSION PROGRESS</h3>
+
+<div style="
+background:#334155;
+height:30px;
+border-radius:20px;
+overflow:hidden;
+">
+
+<div id="progressBar"
+style="
+height:100%;
+width:0%;
+background:#00b894;
+transition:0.5s;
+">
+</div>
+
+</div>
+
+<h2 id="progressText">
+0% READY
+</h2>
+
+<button id="submitMission"
+style="
+margin-top:15px;
+width:100%;
+">
+🚀 SUBMIT MISSION
+</button>
+
+<div id="missionResult"
+style="
+margin-top:15px;
+font-size:24px;
+font-weight:bold;
+text-align:center;
+">
+</div>
+
+</div>
+
+</div>
+```
 <div class="footer">
 Thailand Deployment Dashboard v1
 </div>
@@ -278,6 +377,99 @@ player.innerText;
 );
 
 });
+```javascript
+const checks =
+document.querySelectorAll(".check");
+
+function updateMission(){
+
+let checked = 0;
+
+checks.forEach(c=>{
+if(c.checked) checked++;
+});
+
+let percent =
+Math.round(
+(checked/checks.length)*100
+);
+
+document.getElementById(
+"progressBar"
+).style.width =
+percent+"%";
+
+document.getElementById(
+"progressText"
+).innerHTML =
+percent + "% READY";
+
+}
+
+checks.forEach(c=>{
+c.addEventListener(
+"change",
+updateMission
+);
+});
+
+document.getElementById(
+"submitMission"
+).addEventListener(
+"click",
+()=>{
+
+const passport =
+checks[0].checked;
+
+let checked = 0;
+
+checks.forEach(c=>{
+if(c.checked) checked++;
+});
+
+let percent =
+Math.round(
+(checked/checks.length)*100
+);
+
+if(!passport){
+
+document.getElementById(
+"missionResult"
+).innerHTML =
+"🚨 Passport pon lupa ke CIBAI";
+
+return;
+}
+
+if(percent < 50){
+
+document.getElementById(
+"missionResult"
+).innerHTML =
+"🤡 KAU INGAT LUCU KE BABI";
+
+}
+else if(percent === 100){
+
+document.getElementById(
+"missionResult"
+).innerHTML =
+"💙 AFFIQ HISAP SAMPAI BIRU 🎉";
+
+}
+else{
+
+document.getElementById(
+"missionResult"
+).innerHTML =
+"😎 THAILAND CALLING";
+
+}
+
+});
+```
 
 </script>
 
